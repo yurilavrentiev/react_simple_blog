@@ -1,0 +1,25 @@
+.post {
+  font-size: 18px;
+  color: rgb(78, 84, 68);
+  text-align: left;
+  margin: 0 auto;
+  display:flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 1000px;
+
+}
+
+.post h2 {
+  text-align: left;
+}
+
+
+.post button {
+  border: none;
+  background-color: unset;
+}
+
+.deleteBtn svg {
+  font-size: 40px;
+}

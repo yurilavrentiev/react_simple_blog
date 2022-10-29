@@ -1,0 +1,17 @@
+footer {
+  height: 30px;
+  background-color: rgb(37, 39, 40);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 100%;
+  bottom: 0;
+  position: fixed;
+}
+
+footer span {
+  color: rgb(195, 204, 211);
+  font-weight: 400;
+  font-size: 12px;
+  vertical-align: middle;
+}

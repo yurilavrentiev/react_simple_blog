@@ -1,0 +1,17 @@
+.input {
+  width: 400px;
+  height: 100px;
+}
+
+.btn {
+  background-color: rgb(37, 39, 40);
+  color: rgb(195, 204, 211);
+  border-radius: 20px;
+  font-size: 15px;
+  width: 120px;
+  height: 30px;
+}
+
+.btn:hover {
+  color: rgb(229, 178, 102);
+}
