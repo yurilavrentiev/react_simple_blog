@@ -24,7 +24,6 @@ class AddPostForm extends React.Component {
   createPost = (event) => {
     event.preventDefault()
     const post = {
-      id: this.props.postsArr.length + 1,
       title: this.state.postTitle,
       article: this.state.postBody,
       liked: false,
