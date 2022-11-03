@@ -1,4 +1,4 @@
-header {
+.headerBar {
   background-color: rgb(37, 39, 40);
   padding: 10px;
   height: 30px;
@@ -8,7 +8,7 @@ header {
   transition: .2s;
 }
 
-header p {
+.headerBar  p {
   font-weight: 500;
   transition: all .2s linear;
   display: inline-block;
@@ -18,6 +18,6 @@ header p {
   cursor: pointer;
 }
 
-header p:hover {
+.headerBar  p:hover {
   color:rgb(229, 178, 102);
 }

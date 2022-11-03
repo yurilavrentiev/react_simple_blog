@@ -1,11 +1,11 @@
-import './AddPostForm.css';
+import styles from  './EditPostForm.module.css';
 import CancelSharpIcon from '@mui/icons-material/CancelSharp';
 import React from 'react';
 
-class AddPostForm extends React.Component {
+class EditPostForm extends React.Component {
   state = {
-    postTitle: '',
-    postBody: '',
+    postTitle: this.props.selectedPost.title,
+    postBody: this.props.selectedPost.article,
   }
   handleInputChange = (event) => {
     event.preventDefault();
@@ -21,32 +21,46 @@ class AddPostForm extends React.Component {
     })
   }
 
-  createPost = (event) => {
+  savePost = (event) => {
     event.preventDefault()
     const post = {
+      id: this.props.selectedPost.id,
       title: this.state.postTitle,
       article: this.state.postBody,
-      liked: false,
+      liked: this.props.selectedPost.liked,
     }
-    this.props.addPost(post)
+    this.props.editPost(post)
     this.props.hideForm()
+  }
+
+  handleEscape = (event) => {
+    if (event.key === 'Escape') {
+      this.props.hideForm()
+    }
+  }
+
+  componentDidMount() {
+    window.addEventListener('keyup', this.handleEscape);
+  }
+  componentWillUnmount() {
+    window.removeEventListener('keyup', this.handleEscape);
   }
 
   render() {
     const hideForm = this.props.hideForm;
     return (
       <>
-        <form className='AddPostForm' onSubmit={this.createPost}>
+        <form className={styles.editPostForm} onSubmit={this.savePost}>
           <button
             onClick={hideForm}
-            className='btnContainer'>
+            className={styles.btnContainer}>
             <CancelSharpIcon />
           </button>
-          <h3>New Post</h3>
+          <h3>Edit Post</h3>
           <div>
             <input
               name='postTitle'
-              className='formInputs'
+              className={styles.formInputs}
               placeholder='Post Title'
               value={this.state.postTitle}
               onChange={this.handleInputChange} 
@@ -55,7 +69,7 @@ class AddPostForm extends React.Component {
           <div>
             <textarea
               name='postBody'
-              className='formInputs'
+              className={styles.formInputs}
               placeholder='Post Content'
               value={this.state.postBody}
               onChange={this.handleTextAreaChange}
@@ -64,13 +78,13 @@ class AddPostForm extends React.Component {
           <div>
             <button
               type='submit'
-              className='btn'>
-              Add Post
+              className={styles.btn}>
+              Save Changes
             </button>
           </div>
         </form>
         <div
-          className='overlay'
+          className={styles.overlay}
           onClick={hideForm}>
         </div>
       </>
@@ -78,4 +92,4 @@ class AddPostForm extends React.Component {
   }
 }
 
-export default AddPostForm;
+export default EditPostForm;

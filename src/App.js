@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
-import BlogContent from './components/BlogContent/BlogContent';
+import BlogContent from './components/HomePage/BlogContent/BlogContent';
 import { posts } from './State/State'
 
 function App() {

@@ -21,5 +21,15 @@
 }
 
 .deleteBtn svg {
-  font-size: 40px;
+  font-size: 32px;
+}
+.editBtn svg {
+  font-size: 30px;
+}
+.postControl {
+  display: flex;
+  align-items: center;
+}
+.postControl button {
+  padding: 0;
 }

@@ -1,4 +1,4 @@
-footer {
+.footerBar {
   height: 30px;
   background-color: rgb(37, 39, 40);
   display: flex;
@@ -9,7 +9,7 @@ footer {
   position: fixed;
 }
 
-footer span {
+.footerBar span {
   color: rgb(195, 204, 211);
   font-weight: 400;
   font-size: 12px;

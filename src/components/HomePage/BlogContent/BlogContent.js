@@ -1,16 +1,19 @@
 import React from "react";
-import './BlogContent.css';
-import Post from "../Post/Post";
+import styles from './BlogContent.module.css';
+import Post from "../../Post/Post";
 import AddPostForm from "./AddPostForm";
 import axios from 'axios';
 import CircularProgress from '@mui/material/CircularProgress';
+import EditPostForm from "./EditPostForm";
 
 class BlogContent extends React.Component {
 
   state = {
     showAddForm: false,
+    showEditForm: false,
     postsArr: [],
     isPending: false,
+    selectedPost: {},
   }
 
   likePost = (blogPost) => {
@@ -46,7 +49,19 @@ class BlogContent extends React.Component {
         this.getPost();
       })
       .catch((error) => console.log(error))
+  }
 
+  editPost = (updatedBlogPost) => {
+    this.setState({
+      isPending: true
+    })
+
+    axios.put(`https://635bea26aa7c3f113dc9a068.mockapi.io/posts/${updatedBlogPost.id}`, updatedBlogPost)
+    .then((response) => {
+      console.log('All changes have been saved => ', response.data);
+      this.getPost();
+    })
+    .catch((error) => console.log(error))
   }
 
   deletePost = (blogPost) => {
@@ -61,6 +76,10 @@ class BlogContent extends React.Component {
           this.getPost()
         })
         .catch((error) => console.log(error))
+    } else {
+      this.setState({
+        isPending: false
+      })
     }
   }
 
@@ -74,22 +93,31 @@ class BlogContent extends React.Component {
       showAddForm: false
     })
   }
-
-  handleEscape = (event) => {
-    if (event.key === 'Escape' && this.state.showAddForm) {
-      this.handleHideForm()
-    }
+  handleShowEditForm = () => {
+    this.setState({
+      showEditForm: true
+    })
+  }
+  handleHideEditForm = () => {
+    this.setState({
+      showEditForm: false
+    })
+  }
+  
+  handleSelectedPost = (blogPost) => {
+    this.setState({
+      selectedPost: blogPost
+    })
   }
 
-
-
+ 
 
   componentDidMount() {
     this.getPost()
-    window.addEventListener('keydown', this.handleEscape)
   }
+
   componentWillUnmount() {
-    window.removeEventListener('keydown', this.handleEscape)
+   
   }
 
 
@@ -104,6 +132,8 @@ class BlogContent extends React.Component {
           liked={item.liked}
           likePost={() => this.likePost(item)}
           deletePost={() => this.deletePost(item)}
+          showEditForm={this.handleShowEditForm}
+          handleSelectedPost={() => this.handleSelectedPost(item)}
         />
       )
     })
@@ -113,19 +143,25 @@ class BlogContent extends React.Component {
     }
     const postsOpacity = this.state.isPending ? 0.5 : 1
     return (
-      <div className='blogPage'>
+      <div className={styles.blogPage}>
         {this.state.showAddForm &&
           (<AddPostForm
             hideForm={this.handleHideForm}
             addPost={this.addNewPost}
             postsArr={this.state.postsArr}
           />)}
+        {this.state.showEditForm && (
+          <EditPostForm 
+            hideForm={this.handleHideEditForm}
+            selectedPost={this.state.selectedPost}
+            editPost={this.editPost}/>
+        )}
 
         <h1>My Blog</h1>
-        <button className='btn' onClick={this.handleShowForm}>New Post</button>
+        <button className={styles.btn} onClick={this.handleShowForm}>New Post</button>
        
-        <div className='posts' style={{opacity: postsOpacity}}>
-          {this.state.isPending && <CircularProgress className='loader'/>}
+        <div className={styles.posts} style={{opacity: postsOpacity}}>
+          {this.state.isPending && <CircularProgress className={styles.loader}/>}
           {blogPosts}
       
         </div>

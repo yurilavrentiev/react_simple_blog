@@ -1,12 +1,12 @@
 import React from "react";
-import './Header.css'
+import styles from './Header.module.css'
 
 const Header = () => {
   return (
-    <header>
+    <header className={styles.headerBar}>
       <nav>
         <p>Home</p>
-        <p>About</p>
+        <p>Sign in</p>
         <p>Contact</p>
       </nav>
     </header>
