@@ -70,6 +70,7 @@ class AddPostForm extends React.Component {
               name='postBody'
               className={styles.formInputs}
               placeholder='Post Content'
+              rows={5}
               value={this.state.postBody}
               onChange={this.handleTextAreaChange}
               required />

@@ -1,10 +1,11 @@
 import React from "react";
 import styles from './BlogContent.module.css';
-import Post from "../../Post/Post";
+import Post from "../Post/Post";
 import AddPostForm from "./AddPostForm";
 import axios from 'axios';
 import CircularProgress from '@mui/material/CircularProgress';
 import EditPostForm from "./EditPostForm";
+
 
 class BlogContent extends React.Component {
 
@@ -17,19 +18,19 @@ class BlogContent extends React.Component {
   }
 
   likePost = (blogPost) => {
-    const temp = {...blogPost};
+    const temp = { ...blogPost };
     temp.liked = !temp.liked;
 
     axios.put(`https://635bea26aa7c3f113dc9a068.mockapi.io/posts/${blogPost.id}`, temp)
-    .then((response) => {
-      console.log('Post has been modified', response.data)
-      this.getPost()
-    })
-    .catch((error) => console.log(error));
+      .then((response) => {
+        console.log('Post has been modified', response.data)
+        this.getPost()
+      })
+      .catch((error) => console.log(error));
   }
 
   getPost = () => {
-   
+
     axios.get('https://635bea26aa7c3f113dc9a068.mockapi.io/posts')
       .then((response) => {
         this.setState({
@@ -39,6 +40,11 @@ class BlogContent extends React.Component {
       })
       .catch((error) => console.log(error));
   }
+
+  componentDidMount() {
+    this.getPost()
+  }
+
   addNewPost = (blogPost) => {
     this.setState({
       isPending: true
@@ -57,11 +63,11 @@ class BlogContent extends React.Component {
     })
 
     axios.put(`https://635bea26aa7c3f113dc9a068.mockapi.io/posts/${updatedBlogPost.id}`, updatedBlogPost)
-    .then((response) => {
-      console.log('All changes have been saved => ', response.data);
-      this.getPost();
-    })
-    .catch((error) => console.log(error))
+      .then((response) => {
+        console.log('All changes have been saved => ', response.data);
+        this.getPost();
+      })
+      .catch((error) => console.log(error))
   }
 
   deletePost = (blogPost) => {
@@ -103,27 +109,20 @@ class BlogContent extends React.Component {
       showEditForm: false
     })
   }
-  
+
   handleSelectedPost = (blogPost) => {
     this.setState({
       selectedPost: blogPost
     })
   }
 
- 
-
-  componentDidMount() {
-    this.getPost()
-  }
-
   componentWillUnmount() {
-   
-  }
 
+  }
 
   render() {
 
-    const blogPosts = this.state.postsArr.map((item, pos) => {
+    const blogPosts = this.state.postsArr.map((item) => {
       return (
         <Post
           key={item.id}
@@ -151,19 +150,19 @@ class BlogContent extends React.Component {
             postsArr={this.state.postsArr}
           />)}
         {this.state.showEditForm && (
-          <EditPostForm 
+          <EditPostForm
             hideForm={this.handleHideEditForm}
             selectedPost={this.state.selectedPost}
-            editPost={this.editPost}/>
+            editPost={this.editPost} />
         )}
 
         <h1>My Blog</h1>
         <button className={styles.btn} onClick={this.handleShowForm}>New Post</button>
-       
-        <div className={styles.posts} style={{opacity: postsOpacity}}>
-          {this.state.isPending && <CircularProgress className={styles.loader}/>}
+
+        <div className={styles.posts} style={{ opacity: postsOpacity }}>
+          {this.state.isPending && <CircularProgress className={styles.loader} />}
           {blogPosts}
-      
+
         </div>
       </div>
     )

@@ -1,0 +1,16 @@
+.contacts {
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.contacts a {
+  text-decoration: none;
+  color: rgb(37, 39, 40);
+}
+.contacts a:hover {
+  color:rgb(229, 178, 102);
+  font-weight: 500;
+}
+.contacts div {
+  margin: 10px;
+}
