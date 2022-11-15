@@ -6,6 +6,7 @@ import axios from 'axios';
 import CircularProgress from '@mui/material/CircularProgress';
 import EditPostForm from "./EditPostForm";
 
+let source;
 
 class BlogContent extends React.Component {
 
@@ -30,8 +31,8 @@ class BlogContent extends React.Component {
   }
 
   getPost = () => {
-
-    axios.get('https://635bea26aa7c3f113dc9a068.mockapi.io/posts')
+    source = axios.CancelToken.source();
+    axios.get('https://635bea26aa7c3f113dc9a068.mockapi.io/posts', { cancelToken: source.token })
       .then((response) => {
         this.setState({
           postsArr: response.data,
@@ -43,6 +44,11 @@ class BlogContent extends React.Component {
 
   componentDidMount() {
     this.getPost()
+  }
+  componentWillUnmount() {
+    if (source) {
+      source.cancel('Axios get request canceled')
+    }
   }
 
   addNewPost = (blogPost) => {
@@ -116,9 +122,7 @@ class BlogContent extends React.Component {
     })
   }
 
-  componentWillUnmount() {
-
-  }
+  
 
   render() {
 
