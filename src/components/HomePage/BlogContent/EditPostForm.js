@@ -1,56 +1,53 @@
 import styles from  './EditPostForm.module.css';
 import CancelSharpIcon from '@mui/icons-material/CancelSharp';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
-class EditPostForm extends React.Component {
-  state = {
-    postTitle: this.props.selectedPost.title,
-    postBody: this.props.selectedPost.article,
-  }
-  handleInputChange = (event) => {
+const EditPostForm = (props) => {
+  
+  const [postTitle, setPostTitle] = useState(props.selectedPost.title);
+  const [postBody, setPostBody] = useState(props.selectedPost.article)
+
+  const handleInputChange = (event) => {
     event.preventDefault();
-    this.setState({
-      postTitle: event.target.value
-    })
+    setPostTitle(event.target.value)
   }
 
-  handleTextAreaChange = (event) => {
+  const handleTextAreaChange = (event) => {
     event.preventDefault();
-    this.setState({
-      postBody: event.target.value
-    })
+    setPostBody(event.target.value)
   }
 
-  savePost = (event) => {
+  const savePost = (event) => {
     event.preventDefault()
     const post = {
-      id: this.props.selectedPost.id,
-      title: this.state.postTitle,
-      article: this.state.postBody,
-      liked: this.props.selectedPost.liked,
+      id: props.selectedPost.id,
+      title: postTitle,
+      article: postBody,
+      liked: props.selectedPost.liked,
     }
-    this.props.editPost(post)
-    this.props.hideForm()
+    props.editPost(post);
+    props.hideForm();
   }
 
-  handleEscape = (event) => {
-    if (event.key === 'Escape') {
-      this.props.hideForm()
-    }
-  }
+  
+  useEffect(() => {
+    const handleEscape = (event) => {
+      if (event.key === 'Escape') {
+        props.hideForm()
+      }
+    };
+    window.addEventListener('keyup', handleEscape)
 
-  componentDidMount() {
-    window.addEventListener('keyup', this.handleEscape);
-  }
-  componentWillUnmount() {
-    window.removeEventListener('keyup', this.handleEscape);
-  }
+    return () => {window.removeEventListener('keyup', handleEscape)}
+  }, [props])
 
-  render() {
-    const hideForm = this.props.hideForm;
+
+
+    const hideForm = props.hideForm;
+
     return (
       <>
-        <form className={styles.editPostForm} onSubmit={this.savePost}>
+        <form className={styles.editPostForm} onSubmit={savePost}>
           <button
             onClick={hideForm}
             className={styles.btnContainer}>
@@ -62,8 +59,8 @@ class EditPostForm extends React.Component {
               name='postTitle'
               className={styles.formInputs}
               placeholder='Post Title'
-              value={this.state.postTitle}
-              onChange={this.handleInputChange} 
+              value={postTitle}
+              onChange={handleInputChange} 
               required/>
           </div>
           <div>
@@ -72,8 +69,8 @@ class EditPostForm extends React.Component {
               className={styles.formInputs}
               placeholder='Post Content'
               rows={5}
-              value={this.state.postBody}
-              onChange={this.handleTextAreaChange}
+              value={postBody}
+              onChange={handleTextAreaChange}
               required />
           </div>
           <div>
@@ -90,7 +87,7 @@ class EditPostForm extends React.Component {
         </div>
       </>
     )
-  }
 }
+
 
 export default EditPostForm;
