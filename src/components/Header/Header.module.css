@@ -28,3 +28,29 @@
   color: rgb(229, 178, 102);
   font-weight: 700;
 }
+.massage {
+  color: rgb(195, 204, 211);
+  font-size: 18px;
+}
+.btnContainer {
+  border: none;
+  background-color: unset;
+  color: rgb(195, 204, 211);
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.btnContainer svg {
+  font-size: 18px;
+  padding: 0;
+}
+.btnContainer:hover {
+  color:rgb(229, 178, 102);
+}
+
+.container {
+  color: rgb(195, 204, 211);
+  position: absolute;
+  font-size: 20px;
+  margin-left: 30px;
+}
