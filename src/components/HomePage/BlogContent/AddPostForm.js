@@ -1,95 +1,91 @@
 import styles from './AddPostForm.module.css';
 import CancelSharpIcon from '@mui/icons-material/CancelSharp';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
-class AddPostForm extends React.Component {
-  state = {
-    postTitle: '',
-    postBody: '',
-  }
-  handleInputChange = (event) => {
+const AddPostForm = (props) => {
+
+  const [postTitle, setPostTitle] = useState('');
+  const [postBody, setPostBody] = useState('');
+
+  const hideForm = props.hideForm;
+
+  const handleInputChange = (event) => {
     event.preventDefault();
-    this.setState({
-      postTitle: event.target.value
-    })
+    setPostTitle(event.target.value);
   }
 
-  handleTextAreaChange = (event) => {
+  const handleTextAreaChange = (event) => {
     event.preventDefault();
-    this.setState({
-      postBody: event.target.value
-    })
+    setPostBody(event.target.value);
   }
 
-  createPost = (event) => {
+  const createPost = (event) => {
     event.preventDefault()
     const post = {
-      title: this.state.postTitle,
-      article: this.state.postBody,
+      title: postTitle,
+      article: postBody,
       liked: false,
     }
-    this.props.addPost(post)
-    this.props.hideForm()
+    props.addPost(post)
+    props.hideForm()
   }
 
-  handleEscape = (event) => {
-    if (event.key === 'Escape') {
-      this.props.hideForm()
+  useEffect(() => {
+    const handleEscape = (event) => {
+      if (event.key === 'Escape') {
+        props.hideForm()
+      }
     }
-  }
+    window.addEventListener('keyup', handleEscape);
 
-  componentDidMount() {
-    window.addEventListener('keyup', this.handleEscape);
-  }
-  componentWillUnmount() {
-    window.removeEventListener('keyup', this.handleEscape);
-  }
+    return () => { window.removeEventListener('keyup', handleEscape) }
+  }, [props]);
 
-  render() {
-    const hideForm = this.props.hideForm;
-    return (
-      <>
-        <form className={styles.addPostForm} onSubmit={this.createPost}>
-          <button
-            onClick={hideForm}
-            className={styles.btnContainer}>
-            <CancelSharpIcon />
-          </button>
-          <h3>New Post</h3>
-          <div>
-            <input
-              name='postTitle'
-              className={styles.formInputs}
-              placeholder='Post Title'
-              value={this.state.postTitle}
-              onChange={this.handleInputChange} 
-              required/>
-          </div>
-          <div>
-            <textarea
-              name='postBody'
-              className={styles.formInputs}
-              placeholder='Post Content'
-              rows={5}
-              value={this.state.postBody}
-              onChange={this.handleTextAreaChange}
-              required />
-          </div>
-          <div>
-            <button
-              type='submit'
-              className={styles.btn}>
-              Add Post
-            </button>
-          </div>
-        </form>
-        <div
-          className={styles.overlay}
-          onClick={hideForm}>
+
+
+  return (
+    <>
+      <form className={styles.addPostForm} onSubmit={createPost}>
+        <button
+          onClick={hideForm}
+          className={styles.btnContainer}>
+          <CancelSharpIcon />
+        </button>
+        <h3>New Post</h3>
+        <div>
+          <input
+            name='postTitle'
+            className={styles.formInputs}
+            placeholder='Post Title'
+            value={postTitle}
+            onChange={handleInputChange}
+            required />
         </div>
-      </>
-    )
-  }
+        <div>
+          <textarea
+            name='postBody'
+            className={styles.formInputs}
+            placeholder='Post Content'
+            rows={5}
+            value={postBody}
+            onChange={handleTextAreaChange}
+            required />
+        </div>
+        <div>
+          <button
+            type='submit'
+            className={styles.btn}>
+            Add Post
+          </button>
+        </div>
+      </form>
+      <div
+        className={styles.overlay}
+        onClick={hideForm}>
+      </div>
+    </>
+  )
 }
+
 
 export default AddPostForm;
