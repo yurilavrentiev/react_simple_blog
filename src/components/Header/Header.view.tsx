@@ -7,7 +7,7 @@ import { Controller } from "../../types";
 
 const setActive = ({ isActive }: {isActive: boolean}) => isActive ? styles.active : styles.inactive;
 
-export const Header = observer((props: {controller: Controller}) => {
+export const Header = observer(function Header(props: {controller: Controller}) {
   const {controller} = props;
 
   return (

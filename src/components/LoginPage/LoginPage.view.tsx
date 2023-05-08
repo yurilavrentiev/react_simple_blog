@@ -5,14 +5,14 @@ import { Controller } from '../../types';
 import { observer } from 'mobx-react';
 
 
-export const LoginPage = observer((props: {controller: Controller}) => {
+export const LoginPage = observer(function LoginPage(props: {controller: Controller}) {
 	const {controller} = props;
   let navigate = useNavigate();
 
   const handleLogin = (event) => {
     controller.signInHandler(event);
     navigate('/');
-  }
+  };
 
   return (
 		<form className={styles.loginForm} onSubmit={handleLogin}>

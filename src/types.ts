@@ -3,8 +3,8 @@ export type Controller = {
 	isShowedAddPostForm: boolean;
 	isShowedEditPostForm: boolean;
 	isPending: boolean;
-	posts: Post[];
-	selectedPost: Post;
+	posts: Post[] | [];
+	selectedPost: Post | {};
 	userName: string;
 	loginInputValue: string;
 	passwordInputValue: string;
@@ -17,9 +17,12 @@ export type Controller = {
 	showAddPostFormHandler(value: boolean);
 	showEditPostFormHandler(value: boolean);
 	isPendingHandler(value: boolean);
+	setPosts();
+	likePost(postId: string);
+	deletePost(blogPost: Post);
 };
 
-type Post = {
+export type Post = {
 	title: string;
 	article: string;
 	liked: boolean;

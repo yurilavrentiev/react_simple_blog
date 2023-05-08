@@ -23,7 +23,7 @@ export const App = observer(() => {
 			<main>
 				{controller.isLoggedIn ? (
 					<Routes>
-						<Route path="/" element={<BlogContent />} />
+						<Route path="/" element={<BlogContent controller={controller}/>} />
 						<Route path="/contacts" element={<ContactsPage />} />
 						<Route path="/404" element={<NotFoundPage />} />
 						<Route
