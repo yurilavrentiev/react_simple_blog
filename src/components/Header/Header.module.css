@@ -54,3 +54,6 @@
   font-size: 20px;
   margin-left: 30px;
 }
+.headerBar svg {
+  margin-bottom: -3px;
+}

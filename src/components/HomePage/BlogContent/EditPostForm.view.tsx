@@ -1,57 +1,59 @@
-import styles from './AddPostForm.module.css';
+import styles from './EditPostForm.module.css';
 import CancelSharpIcon from '@mui/icons-material/CancelSharp';
 import React, { useEffect, useState } from 'react';
 
-const AddPostForm = (props) => {
+export const EditPostForm = (props) => {
 
-  const [postTitle, setPostTitle] = useState('');
-  const [postBody, setPostBody] = useState('');
-
-  const hideForm = props.hideForm;
+  const [postTitle, setPostTitle] = useState(props.selectedPost.title);
+  const [postBody, setPostBody] = useState(props.selectedPost.article)
 
   const handleInputChange = (event) => {
     event.preventDefault();
-    setPostTitle(event.target.value);
+    setPostTitle(event.target.value)
   }
 
   const handleTextAreaChange = (event) => {
     event.preventDefault();
-    setPostBody(event.target.value);
+    setPostBody(event.target.value)
   }
 
-  const createPost = (event) => {
+  const savePost = (event) => {
     event.preventDefault()
     const post = {
+      id: props.selectedPost.id,
       title: postTitle,
       article: postBody,
-      liked: false,
+      liked: props.selectedPost.liked,
     }
-    props.addPost(post)
-    props.hideForm()
+    props.editPost(post);
+    props.hideForm();
   }
+
 
   useEffect(() => {
     const handleEscape = (event) => {
       if (event.key === 'Escape') {
         props.hideForm()
       }
-    }
-    window.addEventListener('keyup', handleEscape);
+    };
+    window.addEventListener('keyup', handleEscape)
 
     return () => { window.removeEventListener('keyup', handleEscape) }
-  }, [props]);
+  }, [props])
 
 
+
+  const hideForm = props.hideForm;
 
   return (
     <>
-      <form className={styles.addPostForm} onSubmit={createPost}>
+      <form className={styles.editPostForm} onSubmit={savePost}>
         <button
           onClick={hideForm}
           className={styles.btnContainer}>
           <CancelSharpIcon />
         </button>
-        <h3>New Post</h3>
+        <h3>Edit Post</h3>
         <div>
           <input
             name='postTitle'
@@ -75,7 +77,7 @@ const AddPostForm = (props) => {
           <button
             type='submit'
             className={styles.btn}>
-            Add Post
+            Save Changes
           </button>
         </div>
       </form>
@@ -85,7 +87,4 @@ const AddPostForm = (props) => {
       </div>
     </>
   )
-}
-
-
-export default AddPostForm;
+};

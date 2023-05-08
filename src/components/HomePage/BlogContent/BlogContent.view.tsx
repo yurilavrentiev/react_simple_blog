@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import styles from './BlogContent.module.css';
-import Post from "../Post/Post";
-import AddPostForm from "./AddPostForm";
+import {Post} from "../Post/Post.view";
+import {AddPostForm} from "./AddPostForm.view";
 import axios from 'axios';
 import CircularProgress from '@mui/material/CircularProgress';
-import EditPostForm from "./EditPostForm";
+import {EditPostForm} from "./EditPostForm.view";
 
 let source;
 
-const BlogContent = (props) => {
+export const BlogContent = (props) => {
 
 
   const [isShowedAddForm, setIsShowedAddForm] = useState(false);
@@ -144,7 +144,4 @@ const BlogContent = (props) => {
       </div>
     </div>
   )
-}
-
-
-export default BlogContent;
+};

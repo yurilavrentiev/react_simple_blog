@@ -1,0 +1,26 @@
+.nfPage {
+  font-size: 22px;
+  color: rgb(37, 39, 40);
+  font-weight: 900;
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.nfPage a {
+  text-decoration: none;
+  color: rgb(37, 39, 40);
+}
+.nfPage a:hover {
+  color:rgb(229, 178, 102);
+  font-weight: 500;
+}
+
+.nfPage div {
+  margin: 10px;
+}
+
+.nfPage span {
+  color: rgb(229, 178, 102);
+}

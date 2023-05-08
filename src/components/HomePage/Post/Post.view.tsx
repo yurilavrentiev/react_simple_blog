@@ -4,7 +4,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 
-const Post = ({ 
+export const Post = ({ 
     title, 
     article, 
     liked, 
@@ -43,8 +43,4 @@ const Post = ({
   )
 
 
-}
-
-
-
-export default Post;
+};
