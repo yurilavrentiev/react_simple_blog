@@ -1,53 +1,29 @@
 import styles from './AddPostForm.module.css';
 import CancelSharpIcon from '@mui/icons-material/CancelSharp';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
+import {Controller} from '../../../types';
+import { observer } from 'mobx-react';
 
-export const AddPostForm = (props) => {
+export const AddPostForm = observer(function AddPostForm(props: {controller: Controller}) {
 
-  const [postTitle, setPostTitle] = useState('');
-  const [postBody, setPostBody] = useState('');
-
-  const hideForm = props.hideForm;
-
-  const handleInputChange = (event) => {
-    event.preventDefault();
-    setPostTitle(event.target.value);
-  }
-
-  const handleTextAreaChange = (event) => {
-    event.preventDefault();
-    setPostBody(event.target.value);
-  }
-
-  const createPost = (event) => {
-    event.preventDefault()
-    const post = {
-      title: postTitle,
-      article: postBody,
-      liked: false,
-    }
-    props.addPost(post)
-    props.hideForm()
-  }
+  const {controller} = props;
 
   useEffect(() => {
     const handleEscape = (event) => {
       if (event.key === 'Escape') {
-        props.hideForm()
+        controller.showAddPostFormHandler(false);
       }
-    }
+    };
     window.addEventListener('keyup', handleEscape);
 
     return () => { window.removeEventListener('keyup', handleEscape) }
-  }, [props]);
-
-
+  }, [controller]);
 
   return (
     <>
-      <form className={styles.addPostForm} onSubmit={createPost}>
+      <form className={styles.addPostForm} onSubmit={() => {controller.addNewPost()}}>
         <button
-          onClick={hideForm}
+          onClick={() => {controller.showAddPostFormHandler(false)}}
           className={styles.btnContainer}>
           <CancelSharpIcon />
         </button>
@@ -57,8 +33,8 @@ export const AddPostForm = (props) => {
             name='postTitle'
             className={styles.formInputs}
             placeholder='Post Title'
-            value={postTitle}
-            onChange={handleInputChange}
+            value={controller.addPostFormTitleValue}
+            onChange={(event) => {controller.postTitleChangeHandler(event)}}
             required />
         </div>
         <div>
@@ -67,8 +43,8 @@ export const AddPostForm = (props) => {
             className={styles.formInputs}
             placeholder='Post Content'
             rows={5}
-            value={postBody}
-            onChange={handleTextAreaChange}
+            value={controller.addPostFormBodyValue}
+            onChange={(event) => {controller.postBodyChangeHandler(event)}}
             required />
         </div>
         <div>
@@ -81,8 +57,8 @@ export const AddPostForm = (props) => {
       </form>
       <div
         className={styles.overlay}
-        onClick={hideForm}>
+        onClick={() => {controller.showAddPostFormHandler(false)}}>
       </div>
     </>
   )
-};
+});

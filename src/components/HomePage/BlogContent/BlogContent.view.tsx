@@ -1,94 +1,56 @@
-import React, { useEffect, useState } from "react";
-import styles from './BlogContent.module.css';
-import {Post} from "../Post/Post.view";
-import {AddPostForm} from "./AddPostForm.view";
-import axios from 'axios';
-import CircularProgress from '@mui/material/CircularProgress';
-import {EditPostForm} from "./EditPostForm.view";
-import { MyBlogController } from "../../../MyBlogController.ctrl";
+import React, { useEffect } from "react";
+import styles from "./BlogContent.module.css";
+import { Post } from "../Post/Post.view";
+import { AddPostForm } from "./AddPostForm.view";
+import CircularProgress from "@mui/material/CircularProgress";
+import { EditPostForm } from "./EditPostForm.view";
 import { observer } from "mobx-react";
+import { Controller } from "../../../types";
 
-let source;
+export const BlogContent = observer(function BlogContent(props: {
+	controller: Controller;
+}) {
+	const { controller } = props;
 
-export const BlogContent = observer(function BlogContent(props: {controller: MyBlogController}) {
+	useEffect(() => {
+		controller.setPosts();
+		// return () => {
+		//   if (source) {
+		//     source.cancel('Axios get request canceled');
+		//   }
+		// }
+	}, [controller]);
 
-  const {controller} = props;
-  const [selectedPost, setSelectedPost] = useState({});
+	const blogPosts = controller.posts.map((item) => {
+		return (
+			<Post
+				key={item.id}
+				title={item.title}
+				article={item.article}
+				liked={item.liked}
+				likePost={() => controller.likePost(item.id)}
+				deletePost={() => controller.deletePost(item)}
+				showEditForm={() => {
+					controller.showEditPostFormHandler(true);
+				}}
+				handleSelectedPost={() => {
+					controller.setSelectedPost(item);
+				}}
+			/>
+		);
+	});
 
-  useEffect(() => {
+	if (controller.posts.length === 0) {
+		return <h1>Downloading</h1>;
+	}
 
-    controller.setPosts();
-
-    // return () => {
-    //   if (source) {
-    //     source.cancel('Axios get request canceled');
-    //   }
-    // }
-  }, controller.posts);
-
-  const addNewPost = (blogPost) => {
-    controller.isPendingHandler(true);
-    axios.post('https://635bea26aa7c3f113dc9a068.mockapi.io/posts', blogPost)
-      .then((response) => {
-        console.log('Post has been created => ', response.data);
-        controller.setPosts();
-      })
-      .catch((error) => console.log(error));
-  }
-
-  const editPost = (updatedBlogPost) => {
-    controller.isPendingHandler(true)
-    axios.put(`https://635bea26aa7c3f113dc9a068.mockapi.io/posts/${updatedBlogPost.id}`, updatedBlogPost)
-      .then((response) => {
-        console.log('All changes have been saved => ', response.data);
-        controller.setPosts();
-      })
-      .catch((error) => console.log(error));
-  }
-
-
-  const handleSelectedPost = (blogPost) => { setSelectedPost(blogPost) };
-
-
-
-  const blogPosts = controller.posts.map((item) => {
-    return (
-      <Post
-        key={item.id}
-        title={item.title}
-        article={item.article}
-        liked={item.liked}
-        likePost={() => controller.likePost(item.id)}
-        deletePost={() => controller.deletePost(item)}
-        showEditForm={() => {controller.showEditPostFormHandler(true)}}
-        handleSelectedPost={() => handleSelectedPost(item)}
-      />
-    )
-  });
-
-  if (controller.posts.length === 0) {
-    return <h1>Downloading</h1>
-  }
-
-  return (
+	return (
 		<div className={styles.blogPage}>
 			{controller.isShowedAddPostForm && (
-				<AddPostForm
-					hideForm={() => {
-						controller.showAddPostFormHandler(false);
-					}}
-					addPost={addNewPost}
-					postsArr={controller.posts}
-				/>
+				<AddPostForm controller={controller} />
 			)}
 			{controller.isShowedEditPostForm && (
-				<EditPostForm
-					hideForm={() => {
-						controller.showEditPostFormHandler(false);
-					}}
-					selectedPost={selectedPost}
-					editPost={editPost}
-				/>
+				<EditPostForm controller={controller} />
 			)}
 
 			<h1>My Blog</h1>
