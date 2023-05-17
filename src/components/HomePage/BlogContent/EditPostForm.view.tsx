@@ -1,55 +1,28 @@
 import styles from './EditPostForm.module.css';
 import CancelSharpIcon from '@mui/icons-material/CancelSharp';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
+import { Controller } from '../../../types';
+import { observer } from 'mobx-react';
 
-const EditPostForm = (props) => {
-
-  const [postTitle, setPostTitle] = useState(props.selectedPost.title);
-  const [postBody, setPostBody] = useState(props.selectedPost.article)
-
-  const handleInputChange = (event) => {
-    event.preventDefault();
-    setPostTitle(event.target.value)
-  }
-
-  const handleTextAreaChange = (event) => {
-    event.preventDefault();
-    setPostBody(event.target.value)
-  }
-
-  const savePost = (event) => {
-    event.preventDefault()
-    const post = {
-      id: props.selectedPost.id,
-      title: postTitle,
-      article: postBody,
-      liked: props.selectedPost.liked,
-    }
-    props.editPost(post);
-    props.hideForm();
-  }
-
+export const EditPostForm = observer(function EditPostForm(props: {controller: Controller}) {
+  const {controller} = props;
 
   useEffect(() => {
     const handleEscape = (event) => {
       if (event.key === 'Escape') {
-        props.hideForm()
+       controller.setShowEditPostForm(false);
       }
     };
     window.addEventListener('keyup', handleEscape)
 
     return () => { window.removeEventListener('keyup', handleEscape) }
-  }, [props])
-
-
-
-  const hideForm = props.hideForm;
+  }, [controller]);
 
   return (
     <>
-      <form className={styles.editPostForm} onSubmit={savePost}>
+      <form className={styles.editPostForm} onSubmit={() => {controller.editPost()}}>
         <button
-          onClick={hideForm}
+          onClick={() => {controller.setShowEditPostForm(false);}}
           className={styles.btnContainer}>
           <CancelSharpIcon />
         </button>
@@ -59,8 +32,8 @@ const EditPostForm = (props) => {
             name='postTitle'
             className={styles.formInputs}
             placeholder='Post Title'
-            value={postTitle}
-            onChange={handleInputChange}
+            value={controller.editPostInputTitleValue}
+            onChange={(event) => {controller.editPostTitleChangeHandler(event)}}
             required />
         </div>
         <div>
@@ -69,8 +42,8 @@ const EditPostForm = (props) => {
             className={styles.formInputs}
             placeholder='Post Content'
             rows={5}
-            value={postBody}
-            onChange={handleTextAreaChange}
+            value={controller.editPostInputBodyValue}
+            onChange={(event) => {controller.editPostBodyChangeHandler(event)}}
             required />
         </div>
         <div>
@@ -83,11 +56,8 @@ const EditPostForm = (props) => {
       </form>
       <div
         className={styles.overlay}
-        onClick={hideForm}>
+        onClick={() => {controller.setShowEditPostForm(false);}}>
       </div>
     </>
   )
-}
-
-
-export default EditPostForm;
+});

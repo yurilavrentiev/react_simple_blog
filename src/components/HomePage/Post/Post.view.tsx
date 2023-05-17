@@ -3,8 +3,9 @@ import styles from './Post.module.css';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
+import { observer } from "mobx-react";
 
-const Post = ({ 
+export const Post = observer(function Post({ 
     title, 
     article, 
     liked, 
@@ -12,7 +13,7 @@ const Post = ({
     deletePost,
     showEditForm,
     handleSelectedPost
-    }) => {
+    }) {
       
   const heartFill = liked ? 'crimson' : 'black';
 
@@ -43,8 +44,4 @@ const Post = ({
   )
 
 
-}
-
-
-
-export default Post;
+});
