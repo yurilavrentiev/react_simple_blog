@@ -13,10 +13,9 @@ export type Controller = {
 	addPostFormBodyValue: string;
 	editPostInputTitleValue: string;
 	editPostInputBodyValue: string;
-	setIsLoggedIn(value: boolean);
 	setUserName(userName: string);
 	setNewPost();
-	setPosts();
+	fetchPosts();
 	setSelectedPost(selectedPost: Post);
 	loginChangeHandler(event: React.ChangeEvent<HTMLInputElement>);
 	passwordChangeHandler(event: React.ChangeEvent<HTMLInputElement>);
@@ -26,9 +25,8 @@ export type Controller = {
 	editPostBodyChangeHandler(event: React.ChangeEvent<HTMLTextAreaElement>);
 	signInHandler(event: React.FormEvent<HTMLFormElement>);
 	logOutHandler();
-	showAddPostFormHandler(value: boolean);
-	showEditPostFormHandler(value: boolean);
-	isPendingHandler(value: boolean);
+	setShowAddPostForm(value: boolean);
+	setShowEditPostForm(value: boolean);
 	likePost(postId: string);
 	deletePost(blogPost: Post);
 	editPost();

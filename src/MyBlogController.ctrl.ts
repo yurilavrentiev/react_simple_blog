@@ -6,7 +6,7 @@ import { deletePostApi } from "./services/deletePostApi";
 import { addPostApi } from "./services/addPostApi";
 
 export class MyBlogController {
-	isLoggedIn = localStorage.getItem("isLoggedIn") === "true" ? true : false;
+	isLoggedIn = JSON.parse(localStorage.getItem("isLoggedIn")) === true;
 	isShowedAddPostForm = false;
 	isShowedEditPostForm = false;
 	isPending = false;
@@ -34,19 +34,15 @@ export class MyBlogController {
 		makeAutoObservable(this);
 	};
 
-	setIsLoggedIn(value: boolean) {
-		this.isLoggedIn = value;
-	};
-
-	setPosts() {
-		this.isPendingHandler(true);
+	fetchPosts() {
+		this.isPending = true;
 		this.posts = [];
 		getPostsApi().then((response) => {
 			runInAction(() => {
-				response.data.forEach((element: Post) => this.posts.push(element));
+				this.posts = [...response.data];
+				this.isPending = false;
 			});
 		});
-		this.isPendingHandler(false);
 	};
 
 	setSelectedPost(selectedPost: Post) {
@@ -67,16 +63,15 @@ export class MyBlogController {
 	};
 
 	deletePost(blogPost: Post) {
-		this.isPendingHandler(true);
+		this.isPending = true;
 
 		if (window.confirm(`Are you sure you want to delete ${blogPost.title}?`)) {
-			this.isPendingHandler(true);
+			this.isPending = true;
 			deletePostApi(blogPost.id).then(() => {
-				this.setPosts();
-				this.isPendingHandler(false);
+				this.fetchPosts();
 			});
 		} else {
-			this.isPendingHandler(false);
+			this.isPending = false;
 		};
 	};
 
@@ -94,35 +89,29 @@ export class MyBlogController {
 		this.selectedPost.article = this.editPostInputBodyValue;
 	}
 	editPost() {
-		this.isPendingHandler(true);
+		this.isPending = true;
 		this.savePost();
 		editPostApi(this.selectedPost).then(() => {
-			this.setPosts();
-			this.isPendingHandler(false);
+			this.fetchPosts();
 		})
 	}
 
 	addNewPost() {
-		this.isPendingHandler(true);
+		this.isPending = true;
 		this.setNewPost();
 		addPostApi(this.newPost).then(() => {
 			runInAction(() => {
-				this.setPosts();
-				this.isPendingHandler(false);
+				this.fetchPosts();
 			});
 		});
 	};
 
-	showAddPostFormHandler(value: boolean) {
+	setShowAddPostForm(value: boolean) {
 		this.isShowedAddPostForm = value;
 	};
 
-	showEditPostFormHandler(value: boolean) {
+	setShowEditPostForm(value: boolean) {
 		this.isShowedEditPostForm = value;
-	};
-
-	isPendingHandler(value: boolean) {
-		this.isPending = value;
 	};
 
 	setUserName(userName: string) {
@@ -165,12 +154,12 @@ export class MyBlogController {
 		this.setUserName(this.loginInputValue);
 		localStorage.setItem("isLoggedIn", "true");
 		localStorage.setItem("userName", this.userName);
-		this.setIsLoggedIn(true);
+		this.isLoggedIn = true;
 	};
 
 	logOutHandler() {
 		localStorage.setItem("isLoggedIn", "false");
 		localStorage.setItem("userName", "");
-		this.setIsLoggedIn(false);
+		this.isLoggedIn = false;
 	};
 };

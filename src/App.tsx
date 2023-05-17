@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./App.css";
 import { Route, Routes, Navigate, useLocation } from "react-router-dom";
 
@@ -14,8 +14,8 @@ import { observer } from "mobx-react";
 
 export const App = observer(() => {
 
-	const controller = new MyBlogController();
-	let location = useLocation();
+	const [controller] = useState(new MyBlogController());
+	const location = useLocation();
 
 	return (
 		<div className="App">

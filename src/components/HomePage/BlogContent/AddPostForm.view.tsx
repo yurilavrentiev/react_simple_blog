@@ -11,7 +11,7 @@ export const AddPostForm = observer(function AddPostForm(props: {controller: Con
   useEffect(() => {
     const handleEscape = (event) => {
       if (event.key === 'Escape') {
-        controller.showAddPostFormHandler(false);
+        controller.setShowAddPostForm(false);
       }
     };
     window.addEventListener('keyup', handleEscape);
@@ -23,7 +23,7 @@ export const AddPostForm = observer(function AddPostForm(props: {controller: Con
     <>
       <form className={styles.addPostForm} onSubmit={() => {controller.addNewPost()}}>
         <button
-          onClick={() => {controller.showAddPostFormHandler(false)}}
+          onClick={() => {controller.setShowAddPostForm(false);}}
           className={styles.btnContainer}>
           <CancelSharpIcon />
         </button>
@@ -57,7 +57,7 @@ export const AddPostForm = observer(function AddPostForm(props: {controller: Con
       </form>
       <div
         className={styles.overlay}
-        onClick={() => {controller.showAddPostFormHandler(false)}}>
+        onClick={() => {controller.setShowAddPostForm(false);}}>
       </div>
     </>
   )

@@ -10,7 +10,7 @@ export const EditPostForm = observer(function EditPostForm(props: {controller: C
   useEffect(() => {
     const handleEscape = (event) => {
       if (event.key === 'Escape') {
-       controller.showEditPostFormHandler(false);
+       controller.setShowEditPostForm(false);
       }
     };
     window.addEventListener('keyup', handleEscape)
@@ -22,7 +22,7 @@ export const EditPostForm = observer(function EditPostForm(props: {controller: C
     <>
       <form className={styles.editPostForm} onSubmit={() => {controller.editPost()}}>
         <button
-          onClick={() => {controller.showEditPostFormHandler(false)}}
+          onClick={() => {controller.setShowEditPostForm(false);}}
           className={styles.btnContainer}>
           <CancelSharpIcon />
         </button>
@@ -56,7 +56,7 @@ export const EditPostForm = observer(function EditPostForm(props: {controller: C
       </form>
       <div
         className={styles.overlay}
-        onClick={() => {controller.showEditPostFormHandler(false)}}>
+        onClick={() => {controller.setShowEditPostForm(false);}}>
       </div>
     </>
   )

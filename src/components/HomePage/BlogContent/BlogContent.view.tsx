@@ -13,32 +13,13 @@ export const BlogContent = observer(function BlogContent(props: {
 	const { controller } = props;
 
 	useEffect(() => {
-		controller.setPosts();
+		controller.fetchPosts();
 		// return () => {
 		//   if (source) {
 		//     source.cancel('Axios get request canceled');
 		//   }
 		// }
 	}, [controller]);
-
-	const blogPosts = controller.posts.map((item) => {
-		return (
-			<Post
-				key={item.id}
-				title={item.title}
-				article={item.article}
-				liked={item.liked}
-				likePost={() => controller.likePost(item.id)}
-				deletePost={() => controller.deletePost(item)}
-				showEditForm={() => {
-					controller.showEditPostFormHandler(true);
-				}}
-				handleSelectedPost={() => {
-					controller.setSelectedPost(item);
-				}}
-			/>
-		);
-	});
 
 	if (controller.posts.length === 0) {
 		return <h1>Downloading</h1>;
@@ -57,7 +38,7 @@ export const BlogContent = observer(function BlogContent(props: {
 			<button
 				className={styles.btn}
 				onClick={() => {
-					controller.showAddPostFormHandler(true);
+					controller.setShowAddPostForm(true);
 				}}
 			>
 				New Post
@@ -68,7 +49,24 @@ export const BlogContent = observer(function BlogContent(props: {
 				style={{ opacity: controller.isPending ? 0.5 : 1 }}
 			>
 				{controller.isPending && <CircularProgress className={styles.loader} />}
-				{blogPosts}
+				{controller.posts.map((item) => {
+		return (
+			<Post
+				key={item.id}
+				title={item.title}
+				article={item.article}
+				liked={item.liked}
+				likePost={() => controller.likePost(item.id)}
+				deletePost={() => controller.deletePost(item)}
+				showEditForm={() => {
+					controller.setShowEditPostForm(true);
+				}}
+				handleSelectedPost={() => {
+					controller.setSelectedPost(item);
+				}}
+			/>
+		);
+	})};
 			</div>
 		</div>
 	);
